@@ -33,16 +33,11 @@ void setup()
 {
  Matrix_1.setBrightness(Brightness_4);//
  Serial.begin(115200);
- bluetooth.begin(115200);
 }
 
 void loop()
 {
-  if (bluetooth.available()){
-    val = bluetooth.read();
-    Serial.println("Available");
-    Serial.println(val);
-  }
+  face('1');
     
   if (Serial.available()){
     val = Serial.read();
@@ -131,7 +126,7 @@ void testMotor(){
     motor1.run(-motorSpeed);
     motor2.run(motorSpeed);
     delay(1000);
-    motor1.stop();
+    motor1.stop();  
     motor2.stop();
     delay(500);
     
@@ -171,9 +166,9 @@ void face(char emotion){
   /*case : 1 = rest, 2 = happy, 3 = mad, 4 = sad, 5 = dead, 6 = love*/
   switch(emotion){
     case '1': Matrix_1.drawBitmap(0,0,sizeof(RestL), RestL);
-              delay(1000);
+              delay(500);
               Matrix_1.drawBitmap(0,0,sizeof(RestR), RestR); 
-              delay(1000); 
+              delay(500); 
               break;
     case '2': Matrix_1.drawBitmap(0,0,sizeof(Happy), Happy);
               break;
