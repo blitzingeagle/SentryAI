@@ -3,12 +3,11 @@
 #include <MePort.h>
 #include <SoftwareSerial.h>
 
-MeBluetooth bluetooth(PORT_3);
-
 uint8_t motorSpeed = 150;
 uint8_t turnSpeed = 100;
 char val;
 float dist;
+float threshold = 15.00;
 
 void face(char emotion);
 void testMotor();
@@ -16,7 +15,7 @@ void testMotor();
 MeMegaPiDCMotor motor1(PORT1B); //Back left wheel
 MeMegaPiDCMotor motor2(PORT2B); //Back right wheel
 
-//MeUltrasonicSensor ultraSensor(PORT_6);
+MeUltrasonicSensor ultraSensor(PORT_6);
 
 MeLEDMatrix Matrix_1(PORT_5);
 
@@ -31,21 +30,36 @@ uint8_t RestR[16] = {0x00,0x1c,0x22,0x2e,0x2e,0x1c,0x00,0x00,0x00,0x00,0x1c,0x22
 
 void setup()
 {
- Matrix_1.setBrightness(Brightness_4);//
- Serial.begin(115200);
+ Matrix_1.setBrightness(Brightness_4);
+ Serial.begin(9600);
+ Serial.println(val);
 }
 
 void loop()
 {
-  face('1');
+//  face('1');
     
-  if (Serial.available()){
+  if (Serial.available() > 0){
     val = Serial.read();
+    Serial.print("Incoming Value: ");
     Serial.println(val);
   }
 
+  //Check to make sure patrol will not run into an obstacle
+  dist = ultraSensor.distanceCm();
+  if(dist < threshold && val != 'b'){
+    motor1.stop();
+    motor2.stop(); 
+  }
+
+  //Move backward
+  if (val == 'b'){
+    motor1.run(-motorSpeed);
+    motor2.run(motorSpeed); 
+  } 
+    
   //Patrol Perimter: move forward, turn right
-  if (val== 'r') {    
+  else if (val== 'r') {    
     motor1.run(motorSpeed);
     motor2.run(-turnSpeed);
   }
@@ -60,14 +74,9 @@ void loop()
   else if (val == 'f'){
     motor1.run(motorSpeed);
     motor2.run(-motorSpeed); 
-  }  
+  }    
 
-  //Move backward
-  else if (val == 'b'){
-    motor1.run(-motorSpeed);
-    motor2.run(motorSpeed); 
-  }   
-   
+/*
   //Patrol Perimter: move backward, turn right
   if (val== 'o') {    
     motor1.run(-motorSpeed);
@@ -79,6 +88,8 @@ void loop()
     motor1.run(-turnSpeed);
     motor2.run(motorSpeed);  
   }  
+*/
+
   //Stop
   else if (val == 's'){
     motor1.stop();
@@ -189,7 +200,7 @@ void face(char emotion){
               break;
     default:  break;
     
-      }
+    }
   }
 
 void blink(){
