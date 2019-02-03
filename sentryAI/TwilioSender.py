@@ -1,7 +1,7 @@
 from twilio.rest import Client
 
 
-def send_sms(message, to='+164788404920'):
+def send_sms(message, to='+16478840492'):
     account_sid = 'AC1bb7cfc1e72e68178c5f8cea68df358f'
     auth_token = '36e3b88cc4bc102c488736858aea7a1a'
     client = Client(account_sid, auth_token)
@@ -15,7 +15,7 @@ def send_sms(message, to='+164788404920'):
     print(message.sid)
 
 
-def make_call(url='https://grahamhoyes.com/sad.xml', to='+164788404920'):
+def make_call(url='https://grahamhoyes.com/sad.xml', to='+16478840492'):
     account_sid = 'AC1bb7cfc1e72e68178c5f8cea68df358f'
     auth_token = '36e3b88cc4bc102c488736858aea7a1a'
     client = Client(account_sid, auth_token)
