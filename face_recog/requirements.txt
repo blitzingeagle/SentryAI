@@ -13,7 +13,7 @@ idna==2.8
 jsonschema==2.6.0
 numpy==1.16.1
 opencv-python==4.0.0.21
-Pillow==5.4.1
+Pillow==8.3.2
 protobuf==3.6.1
 requests==2.21.0
 six==1.12.0
